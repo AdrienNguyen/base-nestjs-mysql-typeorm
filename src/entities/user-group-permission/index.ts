@@ -1,11 +1,11 @@
-import { User } from './user.entity';
+import { UserGroupPermission } from './user-group-permission.entity';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 const models = {
-  mysql: User,
+  mysql: UserGroupPermission,
   // add new model here if change database
 };
 export const UserModel = models[process.env.DB_TYPE];
 
-export type UserType = User;
+export type UserGroupPermissionType = UserGroupPermission;

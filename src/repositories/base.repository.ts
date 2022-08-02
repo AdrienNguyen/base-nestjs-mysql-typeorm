@@ -1,8 +1,4 @@
-import {
-  IPaginationMeta,
-  IPaginationOptions,
-  paginate,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationMeta, paginate } from 'nestjs-typeorm-paginate';
 import { BaseEntity, Repository } from 'typeorm';
 
 export class BaseRepository<Entity extends BaseEntity> {

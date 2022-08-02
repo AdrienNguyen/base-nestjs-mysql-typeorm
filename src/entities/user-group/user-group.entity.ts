@@ -7,19 +7,16 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('users')
-export class User extends BaseEntity {
+@Entity('user_groups')
+export class UserGroup extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'username', type: 'varchar', length: 255, nullable: true })
-  username: string;
+  @Column({ name: 'name', type: 'varchar', length: 255, nullable: false })
+  name: string;
 
-  @Column({ name: 'email', type: 'varchar', length: 255, unique: true })
-  email: string;
-
-  @Column({ name: 'password', type: 'text', nullable: false, select: false })
-  password: string;
+  @Column({ name: 'description', type: 'text', nullable: true })
+  description: string;
 
   @Column({ name: 'updated_by', type: 'integer', width: 11, nullable: true })
   updatedBy: number;

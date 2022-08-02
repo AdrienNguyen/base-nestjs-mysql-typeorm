@@ -1,4 +1,4 @@
-import { UserModel } from '@entities/user';
+import { UserModel, UserType } from '@entities/user';
 import { CreateUserDto, GetAllUsersDto } from '@modules/users/dtos';
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { UserRepositoryInterface } from '@repositories/user';
@@ -11,11 +11,11 @@ export class UserService {
   ) {}
 
   async getAll(getAllUsersDto: GetAllUsersDto) {
-    const users = await this.userRepository.getAll(getAllUsersDto);
-    return users;
+    const usersData = await this.userRepository.getAll(getAllUsersDto);
+    return usersData;
   }
 
-  async newOne(createUserDto: CreateUserDto) {
+  async newOne(createUserDto: CreateUserDto): Promise<UserType> {
     const { email } = createUserDto;
 
     const user = await this.userRepository.getOne({ email });
@@ -27,9 +27,9 @@ export class UserService {
       );
     }
 
-    let createdUser;
+    let createdUser: UserType;
     try {
-      createdUser = this.userRepository.newOne(createUserDto);
+      createdUser = await this.userRepository.newOne(createUserDto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

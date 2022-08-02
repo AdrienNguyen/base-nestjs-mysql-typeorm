@@ -1,5 +1,5 @@
-export interface BaseRepositoryInterface {
-  getOne(options?: any);
-  getAll(options?: any);
-  newOne(data: any);
+export interface BaseRepositoryInterface<T> {
+  getOne(options?: any): Promise<T>;
+  getAll(options?: any): any;
+  newOne(data: any): Promise<T>;
 }

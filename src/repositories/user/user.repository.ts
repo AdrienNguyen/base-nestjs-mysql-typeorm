@@ -1,10 +1,9 @@
 import { CustomRepository } from '@cores/decorators/custom-repository.decorator';
 import { hashPassword } from '@cores/utils/bcrypt';
 import { User } from '@entities/user/user.entity';
-import { CreateUserDto, GetAllUsersDto } from '@modules/users/dtos';
+import { CreateUserDto } from '@modules/users/dtos';
 import { BaseRepository } from '@repositories/base.repository';
 import { UserRepositoryInterface } from '@repositories/user/user.repository.inteface';
-import { paginate } from 'nestjs-typeorm-paginate';
 
 @CustomRepository(User)
 export class UserRepository
@@ -20,5 +19,14 @@ export class UserRepository
     await createdUser.save();
 
     return createdUser;
+  }
+
+  async findUserByEmail(email: string): Promise<User> {
+    const user = await this.model
+      .createQueryBuilder('users')
+      .select(['users.id', 'users.email', 'users.password', 'users.username'])
+      .where(`users.email = :email`, { email })
+      .getOne();
+    return user;
   }
 }
