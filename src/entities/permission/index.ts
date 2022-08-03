@@ -6,6 +6,6 @@ const models = {
   mysql: Permission,
   // add new model here if change database
 };
-export const UserModel = models[process.env.DB_TYPE];
+export const PermissionModel = models[process.env.DB_TYPE];
 
 export type PermissionType = Permission;

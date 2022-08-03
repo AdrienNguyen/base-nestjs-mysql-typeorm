@@ -21,6 +21,9 @@ export class User extends BaseEntity {
   @Column({ name: 'password', type: 'text', nullable: false, select: false })
   password: string;
 
+  @Column({ name: 'group_id', type: 'integer', width: 11, nullable: true })
+  groupId: number;
+
   @Column({ name: 'updated_by', type: 'integer', width: 11, nullable: true })
   updatedBy: number;
 

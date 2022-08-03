@@ -7,6 +7,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -36,4 +37,15 @@ export class UserController {
       content: createdUser,
     };
   }
+
+  // @Put(':id')
+  // @HttpCode(HttpStatus.CREATED)
+  // async update(@Body() updateUserDto: CreateUserDto) {
+  //   const updatedUser = await this.userService.updateOne(createUserDto);
+
+  //   return {
+  //     success: true,
+  //     content: updatedUser,
+  //   };
+  // }
 }
