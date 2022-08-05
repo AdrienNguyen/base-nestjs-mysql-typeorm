@@ -1,3 +1,4 @@
+import { Permission } from '@cores/decorators/permission.decorator';
 import { AuthService } from '@modules/auths/auth.service';
 import { LoginByPasswordDto, RefreshTokenDto } from '@modules/auths/dtos';
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
@@ -10,6 +11,7 @@ export class AuthController {
 
   @Post('login-by-password')
   @HttpCode(HttpStatus.OK)
+  @Permission('public')
   async loginByPassword(@Body() loginByPasswordDto: LoginByPasswordDto) {
     const loginData = await this.authService.loginByPassword(
       loginByPasswordDto,
@@ -22,6 +24,7 @@ export class AuthController {
 
   @Post('refresh-token')
   @HttpCode(HttpStatus.CREATED)
+  @Permission('public')
   async generateNewAccessJWT(@Body() refreshTokenDto: RefreshTokenDto) {
     const newAccessToken = await this.authService.generateNewAccessJWT(
       refreshTokenDto,

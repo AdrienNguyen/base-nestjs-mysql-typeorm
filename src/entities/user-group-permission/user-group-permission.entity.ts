@@ -1,8 +1,12 @@
+import { Permission } from '../permission/permission.entity';
+import { UserGroup } from '../user-group/user-group.entity';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -12,8 +16,13 @@ export class UserGroupPermission extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'group_id', type: 'integer', width: 11, nullable: false })
-  groupId: number;
+  @Column({
+    name: 'user_group_id',
+    type: 'integer',
+    width: 11,
+    nullable: false,
+  })
+  userGroupId: number;
 
   @Column({
     name: 'permission_id',
@@ -34,4 +43,18 @@ export class UserGroupPermission extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @ManyToOne(
+    () => Permission,
+    (permission) => permission.userGroupPermissions,
+    {
+      eager: true,
+    },
+  )
+  @JoinColumn({ name: 'permission_id' })
+  permission: Permission;
+
+  @ManyToOne(() => UserGroup, (userGroup) => userGroup.userGroupPermissions)
+  @JoinColumn({ name: 'user_group_id' })
+  userGroup: UserGroup;
 }

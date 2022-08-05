@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserGroupPermission } from '../user-group-permission/user-group-permission.entity';
 
 @Entity('user_groups')
 export class UserGroup extends BaseEntity {
@@ -26,4 +29,10 @@ export class UserGroup extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany(
+    () => UserGroupPermission,
+    (userGroupPermission) => userGroupPermission.userGroup,
+  )
+  userGroupPermissions: UserGroupPermission[];
 }

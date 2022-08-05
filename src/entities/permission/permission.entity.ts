@@ -1,8 +1,11 @@
+import { UserGroupPermission } from '../user-group-permission/user-group-permission.entity';
+
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -26,4 +29,10 @@ export class Permission extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany(
+    () => UserGroupPermission,
+    (userGroupPermission) => userGroupPermission.permission,
+  )
+  userGroupPermissions: UserGroupPermission[];
 }

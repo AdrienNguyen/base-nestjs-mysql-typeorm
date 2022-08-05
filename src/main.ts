@@ -1,8 +1,9 @@
 import { HttpExceptionFilter } from '@cores/exception-filter/http-exception.filter';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from '@modules/app.module';
+import { JwtAuthGuard } from '@cores/guards/jwt-auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +11,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
 
   const config = new DocumentBuilder()
     .setTitle('Base BE API Example')

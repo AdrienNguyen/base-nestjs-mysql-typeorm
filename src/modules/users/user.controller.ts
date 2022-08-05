@@ -1,3 +1,4 @@
+import { Permission } from '@cores/decorators/permission.decorator';
 import { CreateUserDto, GetAllUsersDto } from '@modules/users/dtos';
 import { UserService } from '@modules/users/user.service';
 import {
@@ -19,6 +20,7 @@ export class UserController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @Permission('index_user')
   async getAll(@Query() getAllUsersDto: GetAllUsersDto) {
     const users = await this.userService.getAll(getAllUsersDto);
     return {

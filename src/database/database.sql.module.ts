@@ -1,4 +1,5 @@
 import { Permission } from '@entities/permission/permission.entity';
+import { UserGroupPermission } from '@entities/user-group-permission/user-group-permission.entity';
 import { UserGroup } from '@entities/user-group/user-group.entity';
 import { User } from '@entities/user/user.entity';
 import { Module } from '@nestjs/common';
@@ -17,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           username: configService.get('DB_USER'),
           password: configService.get('DB_PASS'),
           database: configService.get('DB_NAME'),
-          entities: [User, UserGroup, Permission],
+          entities: [User, UserGroup, Permission, UserGroupPermission],
           timezone: '+00:00',
           synchronize: false,
           debug: false,

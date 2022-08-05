@@ -34,4 +34,12 @@ export class BaseRepository<Entity extends BaseEntity> {
     await entityCreated.save();
     return entityCreated;
   }
+
+  async deleteOne(options: any): Promise<Entity> {
+    const entity = await this.model.findOneBy(options);
+
+    await this.model.delete(options.id);
+
+    return entity;
+  }
 }

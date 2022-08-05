@@ -24,7 +24,13 @@ export class UserRepository
   async findUserByEmail(email: string): Promise<User> {
     const user = await this.model
       .createQueryBuilder('users')
-      .select(['users.id', 'users.email', 'users.password', 'users.username'])
+      .select([
+        'users.id',
+        'users.email',
+        'users.password',
+        'users.username',
+        'users.groupId',
+      ])
       .where(`users.email = :email`, { email })
       .getOne();
     return user;

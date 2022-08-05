@@ -15,12 +15,16 @@ import {
   LoginResponseData,
 } from '@modules/auths/auth.interface';
 import { UserRepositoryInterface } from '@repositories/user';
+import { UserGroupModel } from '@entities/user-group';
+import { UserGroupRepositoryInterface } from '@repositories/user-group';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(UserModel.name)
     private readonly userRepository: UserRepositoryInterface,
+    @Inject(UserGroupModel.name)
+    private readonly userGroupRepository: UserGroupRepositoryInterface,
   ) {}
 
   async loginByPassword(
@@ -46,7 +50,7 @@ export class AuthService {
     }
 
     const { userData, accessToken, refreshToken } =
-      this.generateResponseLoginData(user);
+      await this.generateResponseLoginData(user);
 
     return {
       userData,
@@ -55,12 +59,16 @@ export class AuthService {
     };
   }
 
-  generateResponseLoginData(user: UserType): LoginResponseData {
+  async generateResponseLoginData(user: UserType): Promise<LoginResponseData> {
     let accessToken;
     let refreshToken;
     let userData;
     try {
-      userData = { ...user };
+      const groupId = user.groupId;
+      const permissionKeys =
+        await this.userGroupRepository.getPermissionsByUserGroupId(groupId);
+
+      userData = { ...user, permissionKeys };
       delete userData.password;
       accessToken = generateAccessJWT(userData, {
         expiresIn: Number(process.env.ACCESS_TOKEN_EXPIRE_IN_SEC),
