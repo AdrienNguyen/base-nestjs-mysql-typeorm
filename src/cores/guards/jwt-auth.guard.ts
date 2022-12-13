@@ -22,13 +22,9 @@ export class JwtAuthGuard implements CanActivate {
       );
 
       if (!permissionKey) {
-        return false;
-      }
-
-      if (permissionKey === 'public') {
         return true;
       }
-
+      
       const request = context.switchToHttp().getRequest();
       const bearerHeader = request.headers.authorization;
 

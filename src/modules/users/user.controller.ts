@@ -8,7 +8,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Put,
+  // Put,
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';

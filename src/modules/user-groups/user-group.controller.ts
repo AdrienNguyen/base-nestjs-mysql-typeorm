@@ -1,3 +1,4 @@
+import { Permission } from '@cores/decorators/permission.decorator';
 import { CreateUserGroupDto } from '@modules/user-groups/dtos';
 import { UserGroupService } from '@modules/user-groups/user-group.service';
 import {
