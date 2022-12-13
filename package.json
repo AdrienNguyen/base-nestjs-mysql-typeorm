@@ -22,7 +22,9 @@
     "migration:generate": "cd ./src/database/migrations && ts-node --project ../../../tsconfig.json ../../../node_modules/.bin/typeorm migration:generate -d ../../../ormconfig.ts",
     "migration:run": "ts-node --project tsconfig.json node_modules/.bin/typeorm migration:run -d ormconfig.ts",
     "migration:revert": "ts-node --project tsconfig.json node_modules/.bin/typeorm migration:revert -d ormconfig.ts",
-    "seed:run": "ts-node node_modules/typeorm-seeding/dist/cli.js seed"
+    "seed:run": "ts-node node_modules/typeorm-seeding/dist/cli.js seed",
+    "crawl:dev": "ts-node -r tsconfig-paths/register src/console.ts crawl",
+    "crawl:prod": "node dist/src/console.js crawl"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -38,6 +40,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mysql2": "^2.3.3",
+    "nestjs-console": "^8.0.0",
     "nestjs-typeorm-paginate": "^4.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
