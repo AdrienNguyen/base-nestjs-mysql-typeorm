@@ -21,6 +21,8 @@ export const typeOrmModuleOptions: TypeOrmModuleOptions = {
   autoLoadEntities: true,
 };
 
+console.log(typeOrmModuleOptions)
+
 const OrmConfig = {
   ...typeOrmModuleOptions,
   migrationsTableName: 'migrations',
