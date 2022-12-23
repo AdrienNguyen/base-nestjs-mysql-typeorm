@@ -14,7 +14,7 @@ phases:
       # define repository and image tag
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-nestjs
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-8)
-      - IMAGE_TAG=COMMIT_HASH
+      - IMAGE_TAG=$COMMIT_HASH
       - echo IMAGE_TAG $COMMIT_HASH
       - echo REPOSITORY_URI $REPOSITORY_URI
       # get environment variable from parameter store
@@ -45,4 +45,4 @@ phases:
 artifacts:
   files: 
     - api_imagedefinitions.json
-    - api_imagedefinitions.json
+    - crawler_imagedefinitions.json
