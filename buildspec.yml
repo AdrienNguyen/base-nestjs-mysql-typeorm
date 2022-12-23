@@ -1,0 +1,48 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      # check version
+      - echo Connecting to Amazon ECR...
+      - aws --version
+      # login to ecr
+      - AWS_ACCOUNT_ID=925574740817
+      - echo AWS_ACCOUNT_ID $AWS_ACCOUNT_ID
+      - echo AWS_DEFAULT_REGION $AWS_DEFAULT_REGION
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      # define repository and image tag
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/base-nestjs
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-8)
+      - IMAGE_TAG=COMMIT_HASH
+      - echo IMAGE_TAG $COMMIT_HASH
+      - echo REPOSITORY_URI $REPOSITORY_URI
+      # get environment variable from parameter store
+      - PARAMETER_STORE_NAME=base-nestjs
+      - echo PARAMETER_STORE_NAME $PARAMETER_STORE_NAME
+      - aws ssm get-parameter --name $PARAMETER_STORE_NAME --region ap-southeast-1 | jq '.Parameter.Value' |  sed 's/^"\(.*\)/\1/' | sed 's/.$//' | sed 's/\\n/\n/g' | sed 's/\\"//g' > .env
+      - cat .env
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      # build images
+      - docker build --platform linux/amd64 -t $REPOSITORY_URI:latest -f Dockerfile .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      # push image to ecr
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      # define task definitions
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s","imageUri":"%s"}]' base-nestjs-api $REPOSITORY_URI:$IMAGE_TAG > api_imagedefinitions.json 
+      - printf '[{"name":"%s","imageUri":"%s"}]' base-nestjs-crawler $REPOSITORY_URI:$IMAGE_TAG > crawler_imagedefinitions.json
+      - cat api_imagedefinitions.json
+      - cat crawler_imagedefinitions.json
+artifacts:
+  files: 
+    - api_imagedefinitions.json
+    - api_imagedefinitions.json
