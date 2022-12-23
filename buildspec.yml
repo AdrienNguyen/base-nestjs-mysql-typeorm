@@ -39,10 +39,7 @@ phases:
       # define task definitions
       - echo Writing image definitions file...
       - printf '[{"name":"%s","imageUri":"%s"}]' base-nestjs-api $REPOSITORY_URI:$IMAGE_TAG > api_imagedefinitions.json 
-      - printf '[{"name":"%s","imageUri":"%s"}]' base-nestjs-crawler $REPOSITORY_URI:$IMAGE_TAG > crawler_imagedefinitions.json
       - cat api_imagedefinitions.json
-      - cat crawler_imagedefinitions.json
 artifacts:
   files: 
     - api_imagedefinitions.json
-    - crawler_imagedefinitions.json
